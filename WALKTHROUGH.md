@@ -131,7 +131,7 @@ These hooks can be installed via the constructor, but also via the class itself 
 
 ```js
 class UDPMulticaster extends Emitter {
-  static async resolve(...args){ 
+  #finally(){ 
     return new Promise(resolve => this[socket].close(resolve))
   }
 }
