@@ -67,6 +67,14 @@ run([1,2,3], map(..), reduce(fs.createWriteStream('file.txt')))
 * Emitter would be closer to what is called a Subject in Observable-land. However, this is also not quite accurate as when you `next` onto an Emitter it's not just directly broadcasting to it's children, but rather lets the Emitter process the value. 
 * Emitter is _unidirectional_, all signals go downwards (whether that's values, or an Emitter resolving/rejecting like a Promise would). A child can never affect a parent by design, especially not implicitly. This gives developers guarantees which make them easier to reason about. Observables, and other libraries, are built on a _bidirectional_ architecture. When a subscription is made, a signal shoots upwards, and then values start coming back down. This in part contributes to making them harder to understand/implement. It seems this design is also a by-product of the original method-chaining API: when you have `A.op().op().subscribe()` you're subscribing on the last node, which means a signal has to travel back up somehow. However, with more modern forms of the API using `pipe` or the pipeline operator, as well as the API here, you are explicitly running A into B top-down, rather than from B to A. `compose` also returns something that represents the entire group, not just the last node in the chain, making it unnecessary for signals to travel up as well as down. 
 
+  One use-case that does perhaps become less ergonomic is `until` not automatically tearing down an Emitter somewhere higher up in the chain. However, this seems like a worthy trade-off as it manifests as the constraint of having to be explicit with what you are tearing down by having the condition first (a composed emitter is a single thing, hence tears down .
+  
+  ```js
+  // these will both return an array of three, however the first will not stop the array emitter
+  run([...], map(), map(), until(3), reduce([]))
+  run(until(3, [...], map(), map(), reduce([])))
+  ```
+
 ### How does this relate to the Standard Library?
 
 This would be a great candidate to expose via the new standard library, although it does not necessarily need to be blocked by that either. It could also neatly be a new global from which you can destructure the operators from i.e. `const { map, filter, run } = Emitter`.
