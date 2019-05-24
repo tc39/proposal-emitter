@@ -139,6 +139,7 @@ It's useful to also familiarise with existing JavaScript libraries in this space
 * [most.js](https://github.com/mostjs/core)
 * [rxjs](https://github.com/ReactiveX/rxjs)
 * [callbags](https://github.com/staltz/callbag-basics/)
+* [p-limit](https://www.npmjs.com/package/p-limit)
 
 More details are included and will be documented in the [FAQ](FAQ.md).
 
