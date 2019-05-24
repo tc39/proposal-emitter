@@ -2,7 +2,7 @@
 
 > **Composability arises from the regularity of shapes**
 
-This section aims to build up deeper intuition and familiarity step-by-step. The details here do _not_ represent common usage, or what users will be conscious of when using it regularly - composing, running, and evaluating Emitters will all become quickly intuitive after just playing with a few examples. This section is more useful for implementors to understand how the full processing model is built from a very small core.
+This section aims to build up deeper intuition and familiarity step-by-step. The details here do _not_ represent common usage, or what users will be conscious of when using it regularly - composing, running, and evaluating Emitters will all become quickly intuitive after just playing with a few examples. This section is more useful for implementors to understand how the full processing model is built from a very small core. In addition, not everything here is intended to ship as a single proposal, but rather just document the cross-cutting concerns. 
 
 ### Multiple Values
 
