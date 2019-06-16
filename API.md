@@ -307,7 +307,7 @@ The `flatten` operator creates a new Emitter that will:
   )
   ```
 
-- If the `args` passed into `flatten` contains a function, that will be invoked on the value received before it's flattened into the Emitter. This means instead of having a `map` followed by a `flatten`, you can combine them i.e. "flatmap".
+* If the `args` passed into `flatten` contains a function, that will be invoked on the value received before it's flattened into the Emitter. This means instead of having a `map` followed by a `flatten`, you can combine them i.e. "flatmap".
 
   ```js
   // returns ['H10', 'H20', 'H30', 'I10', 'I20', 'I30']
@@ -609,10 +609,10 @@ await waitFor(() => document.body.querySelector('div'))
 The `on(obj, name)` helper will create a new Emitter that listens on the named channel `name` of the specified object `obj`. If `obj` is an EventTarget or EventEmitter it will create a listener that nexts the events on the Emitter, that also gets cleaned when the Emitter resolves or rejects.
 
 ```js
-;(clicks = on(document.body, 'click')),
-  clicks.each(() => {
-    console.log('clicked')
-  })
+clicks = on(document.body, 'click'))
+clicks.each(() => {
+  console.log('clicked')
+})
 clicks.resolve()
 ```
 
