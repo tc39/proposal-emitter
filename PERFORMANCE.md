@@ -1,6 +1,6 @@
 # Performance
 
-One of the goals and constraints of this proposal has been to achieve all the other design goals, whilst also matching or beating the high record set by most.js - which is not just a little bit faster, but an order of magnitude or two faster than alternatives. 
+One of the goals and constraints of this proposal has been to achieve all the other design goals, whilst also matching or beating the high record set by most.js - which is not just a little bit faster, but an order of magnitude or two faster than alternatives.
 
 Using the benchmark used by existing libraries in this space, Emitter comfortably and consistently outperforms most.js:
 

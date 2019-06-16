@@ -5,9 +5,9 @@
 * Composable algorithmic transformations, decoupled from their input and outputs
 * Well-integrated with language rather than inventing lots of new concepts, (i.e. Promises, iteration, async iteration, etc)
 * Backwards-compatible unification of platform API (interfaces like EventTarget and EventEmitter)
-* [Ultra-High Performance (faster than most.js)](/PERFORMANCE.md) and memory efficient 
+* [Ultra-High Performance (faster than most.js)](/PERFORMANCE.md) and memory efficient
 
-<br> 
+<br>
 
 ## Reactive programming examples
 
@@ -17,10 +17,10 @@ Log XY coordinates of click events on `<button>` elements:
 const { on, map, filter, run } = Emitter
 
 run(
-  on(document, 'click')
-, filter(ev => ev.target.tagName === 'BUTTON')
-, map(ev => ({ x: ev.clientX, y: ev.clientY }))
-, coords => console.log(coords)
+  on(document, 'click'),
+  filter(ev => ev.target.tagName === 'BUTTON'),
+  map(ev => ({ x: ev.clientX, y: ev.clientY })),
+  coords => console.log(coords)
 )
 ```
 
@@ -29,10 +29,12 @@ Map clicks from two buttons to a stream of +1 and -1, merge them and render the 
 ```js
 const { on, map, tap, reduce, flatten, render } = Emitter
 
-const inc = map(() => 1, on(buttonA, 'click')) 
+const inc = map(() => 1, on(buttonA, 'click'))
 const dec = map(() => -1, on(buttonB, 'click'))
 const counter = reduce(0, flatten(inc, dec))
-const render = tap(total => { output.innerText = String(total) }, counter)
+const render = tap(total => {
+  output.innerText = String(total)
+}, counter)
 run(render)
 ```
 
@@ -43,14 +45,14 @@ const { run, until, once, flatten, reduce } = Emitter
 const { fork } = require('child_process')
 
 const processes = await run(
-  10
-, map(() => fork('peer.js'))
-, map(async peer => {
+  10,
+  map(() => fork('peer.js')),
+  map(async peer => {
     await until(d => d == 'connected', on(peer, 'message'))
     return peer
-  })
-, flatten()
-, reduce([])
+  }),
+  flatten(),
+  reduce([])
 )
 ```
 
@@ -59,23 +61,17 @@ const processes = await run(
 From a range of numbers, divide them by 4, remove any greater than 12, then start collecting those one by one:
 
 ```js
-function* range(from, to) { 
-  for (let i = from; i <= to; i++) yield i  
+function* range(from, to) {
+  for (let i = from; i <= to; i++) yield i
 }
 
-const arr = run(
-  range(40, 60)
-, map(d => d / 4)
-, filter(d => d < 12)
-, reduce([])
-)
+const arr = run(range(40, 60), map(d => d / 4), filter(d => d < 12), reduce([]))
 ```
 
 Transform a series of numbers one by one and log the result:
 
 ```js
-for (const d of map(d => d + 1, [1, 2, 3]))
-  console.log('transformed output', d)
+for (const d of map(d => d + 1, [1, 2, 3])) console.log('transformed output', d)
 ```
 
 Log whenever the user presses CTRL+C
@@ -91,25 +87,25 @@ for await (const d of filter(([n]) => n == 3, process.stdin))
 
 ### Transformation
 
-  * [`map`](/API.md#map)
-  * [`reduce`](/API.md#reduce)
-  * [`flatten`](/API.md#flatten)
+* [`map`](/API.md#map)
+* [`reduce`](/API.md#reduce)
+* [`flatten`](/API.md#flatten)
 
 ### Filtering
 
-  * [`filter`](/API.md#filter)
-  * [`until`](/API.md#until)
+* [`filter`](/API.md#filter)
+* [`until`](/API.md#until)
 
 ### Running
 
-  * [`run`](/API.md#run)
+* [`run`](/API.md#run)
 
 ### Creating
 
-  * [`on`](/API.md#on)
-  * [`once`](/API.md#once)
-  * [`from`](/API.md#from)
-  * [`compose`](/API.md#compose)
+* [`on`](/API.md#on)
+* [`once`](/API.md#once)
+* [`from`](/API.md#from)
+* [`compose`](/API.md#compose)
 
 <br>
 
@@ -120,15 +116,21 @@ For general background into this space, especially from more of a language persp
 For comparison, here would be Rob Pike's original example of [reducing tail latency using replicated search servers](https://talks.golang.org/2012/concurrency.slide#50) discussed in the talk:
 
 ```js
-const { race, timeout, until, reduce, flatten } = Emitter 
+const { race, timeout, until, reduce, flatten } = Emitter
 
 const results = await race(
-  timeout(80)
-, until(3, reduce([], flatten(
-    race(web1(query), web2(query))
-  , race(img1(query), img2(query))
-  , race(vid1(query), vid2(query))
-  )))
+  timeout(80),
+  until(
+    3,
+    reduce(
+      [],
+      flatten(
+        race(web1(query), web2(query)),
+        race(img1(query), img2(query)),
+        race(vid1(query), vid2(query))
+      )
+    )
+  )
 )
 ```
 
